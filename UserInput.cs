@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,5 +63,19 @@ namespace DevBuild.Utilities
             }
             return;
         }
+
+        public static uint SelectMenuOption(int numberOfOptions) {
+            uint userSelection = 0;
+            string userEntry = "";
+
+            while (!uint.TryParse(userEntry, out userSelection) ||
+                    userSelection < 0 ||
+                    userSelection > numberOfOptions) {
+                PromptUntilValidEntry($"Please enter a selection, 1-{numberOfOptions}: ", out userEntry, InformationType.Numeric);
+            }
+            return userSelection;
+        }
     }
+
+
 }
