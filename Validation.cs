@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace DevBuild.Utilities
 {
-    public enum InformationType { Name = 0, EmailAddress, TelephoneNumber, Date, Alphanumeric, Alphabetical, Numeric, ContainsVowels, ContainsPunctuation, ContainsInvalidPunctuation, CustomField }
+    public enum InformationType { Name = 0, LastName, EmailAddress, TelephoneNumber, Date, Alphanumeric, Alphabetical, Numeric, ContainsVowels, ContainsPunctuation, ContainsInvalidPunctuation, CustomField }
 
     /// <summary>
     /// This struct is used to hold an entry prompt string, an enum for the type of data being validated, 
@@ -31,8 +31,9 @@ namespace DevBuild.Utilities
 
     class Validation
     {
-        private const string nameRegexPattern               = @"^[A-Za-z {2}]{1,29}$";
-        private const string emailRegexPattern              = @"^(([A-Za-z0-9]){1,30})+[@]+[a-zA-Z]{5,10}([.])+([A-Za-z.]{3,5})$";
+        private const string nameRegexPattern               = @"^[A-Z][A-Za-z {2}]{1,29}$";
+        private const string lastNameRegexPattern           = @"^[A-Za-z-]{1,29}$";
+        private const string emailRegexPattern              = @"^(([A-Za-z0-9]){1,30})+[@]+[a-zA-Z]{2,10}([.])+([A-Za-z.]{3,5})$";
         private const string telephoneNumberRegexPattern    = @"^([(]?\d{3})[)-]\d{3}[-]\d{4}$";
         private const string dateRegexPattern               = @"^(\d\d)+[/]+(\d{2})[/](\d){4}$";
         private const string numericRegexPattern            = @"^[0-9.]{1,30}$";
@@ -47,6 +48,7 @@ namespace DevBuild.Utilities
         //to this Dictionary using the AddUserGeneratedRegex() method. 
         private static readonly Dictionary<InformationType, string> InformationRegexes = 
             new Dictionary<InformationType, string> {   { InformationType.Name, nameRegexPattern },
+                                                        { InformationType.LastName, lastNameRegexPattern },
                                                         { InformationType.EmailAddress, emailRegexPattern },
                                                         { InformationType.TelephoneNumber, telephoneNumberRegexPattern },
                                                         { InformationType.Date, dateRegexPattern },
