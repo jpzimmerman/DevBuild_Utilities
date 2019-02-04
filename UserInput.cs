@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,37 +39,47 @@ namespace DevBuild.Utilities
             return tmp;
         }
 
-        public static string PromptUntilValidEntry(string message, params InformationType[] inputValidationFilters) {
+        /// <summary>
+        /// (Deprecated) Keeps user in a loop at the input until user enters a string that passes the provided validation filters (information type for name, email address, phone number, etc.)
+        /// </summary>
+        /// <param name="promptQuestion">String containing a prompt question for the user's entry</param>
+        /// <param name="inputValidationFilters">List of InformationType enumerated types representing filters to check the user's entry against</param>
+        /// <returns></returns>
+        [Obsolete("This method has been deprecated. Please use new method PromptUntilValidEntry(string questionPrompt, out string response, params InformationType[] inputValidationFilters")]
+        public static string PromptUntilValidEntry(string promptQuestion, params InformationType[] inputValidationFilters) {
             string response = "";
-        LoopStart:
-            Console.Write(message);
+            Console.Write(promptQuestion);
             while (String.IsNullOrEmpty(response)) {
                 response = Console.ReadLine().Trim();
                 if (String.IsNullOrEmpty(response)) {
-                    Console.Write(message);
+                    Console.Write(promptQuestion);
                     continue;
                 }
                 foreach (InformationType infoType in inputValidationFilters) {
                     if (!Validation.ValidateInfo(infoType, response)) {
                         response = "";
-                        goto LoopStart;
                     }
                 }
             }
             return response;
         }
 
-        public static void PromptUntilValidEntry(string message, out string response, params InformationType[] inputValidationFilters)
+        /// <summary>
+        /// Keeps user in a loop at the input until user enters a string that passes the provided validation filters (information type for name, email address, phone number, etc.)
+        /// </summary>
+        /// <param name="promptQuestion">String containing a prompt question for the user's entry</param>
+        /// <param name="inputValidationFilters">List of InformationType enumerated types representing filters to check the user's entry against</param>
+        /// <returns></returns>
+        public static void PromptUntilValidEntry(string questionPrompt, out string response, params InformationType[] inputValidationFilters)
         {
             response = "";
-            LoopStart:
-            Console.Write(message);
+            Console.Write(questionPrompt);
             while (String.IsNullOrEmpty(response))
             {
                 response = Console.ReadLine().Trim();
                 if (String.IsNullOrEmpty(response))
                 {
-                    Console.Write(message);
+                    Console.Write(questionPrompt);
                     continue;
                 }
                 foreach (InformationType infoType in inputValidationFilters)
@@ -76,7 +87,6 @@ namespace DevBuild.Utilities
                     if (!Validation.ValidateInfo(infoType, response))
                     {
                         response = "";
-                        goto LoopStart;
                     }
                 }
             }
@@ -95,6 +105,4 @@ namespace DevBuild.Utilities
             return userSelection;
         }
     }
-
-
 }
